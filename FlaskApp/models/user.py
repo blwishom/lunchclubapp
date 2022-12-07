@@ -10,7 +10,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(50), nullable=False)
     username = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
-    club_id = db.Column(db.Integer, foreign_key=True)
+    club_id = db.Column(db.Integer)
     hashed_password = db.Column(db.String(50), nullable=False)
 
     @property
