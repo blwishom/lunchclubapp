@@ -39,8 +39,8 @@ db = SQLAlchemy(app)
 # def main():
 #     return f'<h1>{app.config["GREETING"]}</h1>'
 
-# if __name__ == "__main__":
-#     app.run()
+if __name__ == "__main__":
+    app.run(port=5000)
 
 
 
