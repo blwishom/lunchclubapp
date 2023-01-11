@@ -1,11 +1,11 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required
-from models import User
+from models import Member
 
 user_routes = Blueprint('users', __name__)
 
 @user_routes.route('/', methods=['GET'])
-@login_required
+# @login_required
 def users():
     users = User.query.all()
     return jsonify({'users': [user.to_dict() for user in users]})
