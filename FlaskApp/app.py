@@ -7,7 +7,7 @@ from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
 
 from models import db, Member
-from api.user_routes import user_routes
+from api.member_routes import member_routes
 from api.auth_routes import auth_routes
 
 from seeds import seed_commands
@@ -40,7 +40,7 @@ db = SQLAlchemy(app)
 #     return f'<h1>{app.config["GREETING"]}</h1>'
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    app.run(port=5432)
 
 
 
@@ -61,7 +61,7 @@ def load_user(id):
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
-app.register_blueprint(user_routes, url_prefix='/api/users')
+app.register_blueprint(member_routes, url_prefix='/api/members')
 # app.register_blueprint(auth_routes, url_prefix='/api/auth')
 db.init_app(app)
 Migrate(app, db)
