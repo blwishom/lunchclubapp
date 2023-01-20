@@ -21,7 +21,7 @@ def validation_errors_to_error_messages(validation_errors):
 @auth_routes.route('/')
 def authenticate():
     """
-    Authenticates a user.
+    Authenticates a member.
     """
     if current_user.is_authenticated:
         return current_user.to_dict()
@@ -39,38 +39,38 @@ def login():
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         # Add the user to the session, we are logged in!
-        user = User.query.filter(User.email == form.data['email']).first()
-        login_user(user)
-        return user.to_dict()
+        member = Member.query.filter(Member.email == form.data['email']).first()
+        login_user(member)
+        return member.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
 @auth_routes.route('/logout')
 def logout():
     """
-    Logs a user out
+    Logs a member out
     """
-    logout_user()
-    return {'message': 'User logged out'}
+    logout_member()
+    return {'message': 'Member logged out'}
 
 
 @auth_routes.route('/signup', methods=['POST'])
 def sign_up():
     """
-    Creates a new user and logs them in
+    Creates a new member and logs them in
     """
     form = SignUpForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
-        user = User(
+        member = Member(
             username=form.data['username'],
             email=form.data['email'],
             password=form.data['password']
         )
-        db.session.add(user)
+        db.session.add(member)
         db.session.commit()
-        login_user(user)
-        return user.to_dict()
+        login_user(member)
+        return member.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
