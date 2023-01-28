@@ -1,7 +1,13 @@
 from .db import db
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
+from enum import Enum
+class member_type(Enum):
+    banned = 0
+    regular = 1
+    admin = 2
 
 class Member(db.Model, UserMixin):
     __tablename__ = 'members'
@@ -11,7 +17,11 @@ class Member(db.Model, UserMixin):
     username = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
     club_id = db.Column(db.Integer)
+    member_info = db.Column(Enum(member_type))
+    last_login = db.Column(db.DateTime)
     password_digest = db.Column(db.String(50), nullable=False)
+    # created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    # updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     @property
     def password(self):
@@ -30,5 +40,7 @@ class Member(db.Model, UserMixin):
             'name': self.name,
             'username': self.username,
             'email': self.email,
-            'club_id': self.club_id
+            'club_id': self.club_id,
+            'member_info': self.member_info,
+            'last_login': self.last_login
         }
