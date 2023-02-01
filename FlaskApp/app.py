@@ -15,6 +15,7 @@ from seeds import seed_commands
 from config import Config
 
 app = Flask(__name__, static_url_path='', static_folder='../frontend/public')
+app.config.from_object(Config)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:wishom11@localhost/lunchclub_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -48,7 +49,6 @@ if __name__ == "__main__":
 
 
 
-
 # Setup login manager
 login = LoginManager(app)
 login.login_view = 'auth.unauthorized'
@@ -59,8 +59,6 @@ def load_member(id):
 
 # Tell flask about our seed commands
 app.cli.add_command(seed_commands)
-
-app.config.from_object(Config)
 app.register_blueprint(member_routes, url_prefix='/api/members')
 # app.register_blueprint(auth_routes, url_prefix='/api/auth')
 db.init_app(app)

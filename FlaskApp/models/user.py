@@ -2,8 +2,8 @@ from .db import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from sqlalchemy import Enum
 
-from enum import Enum
 member_type = Enum('banned', 'regular', 'admin', name='member_type')
 
 class Member(db.Model, UserMixin):
