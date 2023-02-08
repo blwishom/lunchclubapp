@@ -121,10 +121,11 @@ celerybeat.pid
 
 # Environments
 .env
+.env.example
 .venv
 .flaskenv
 env/
-venv/
+# venv/
 ENV/
 env.bak/
 venv.bak/

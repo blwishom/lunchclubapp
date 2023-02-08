@@ -1,29 +1,31 @@
 from .db import db
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from sqlalchemy import Enum
 
+member_type = Enum('banned', 'regular', 'admin', name='member_type')
 
-<<<<<<< HEAD
-class User(db.Model, UserMixin):
-=======
 class Member(db.Model, UserMixin):
->>>>>>> 4e8d59e094db1e9968185ffee658e1d607510219
-    __tablename__ = 'users'
-
+    __tablename__ = 'members'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     username = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
     club_id = db.Column(db.Integer)
-    hashed_password = db.Column(db.String(50), nullable=False)
+    member_info = db.Column( member_type)
+    last_login = db.Column(db.DateTime)
+    password_digest = db.Column(db.String(50), nullable=False)
+    # created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    # updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     @property
     def password(self):
-        return self.hashed_password
+        return self.password_digest
 
     @password.setter
     def password(self, password):
-        self.hashed_password = generate_password_hash(password)
+        self.password_digest = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
@@ -34,5 +36,7 @@ class Member(db.Model, UserMixin):
             'name': self.name,
             'username': self.username,
             'email': self.email,
-            'club_id': self.club_id
+            'club_id': self.club_id,
+            'member_info': self.member_info,
+            'last_login': self.last_login
         }
