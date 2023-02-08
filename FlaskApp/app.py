@@ -16,7 +16,7 @@ from config import Config
 
 app = Flask(__name__, static_url_path='', static_folder='../frontend/public')
 app.config.from_object(Config)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:wishom11@localhost/lunchclub_db'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 # app.config.from_object(Config)
