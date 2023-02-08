@@ -13,16 +13,10 @@ from api.auth_routes import auth_routes
 from seeds import seed_commands
 
 from config import Config
-<<<<<<< HEAD
-
-app = Flask(__name__, static_url_path='', static_folder='../frontend/public')
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:wishom11@localhost/lunchclub_db'
-=======
 
 app = Flask(__name__, static_url_path='', static_folder='../frontend/public')
 app.config.from_object(Config)
 
->>>>>>> 44165f6689c8e6a27b326ba1cae252fa9f34f90f
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 # app.config.from_object(Config)
