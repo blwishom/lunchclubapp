@@ -9,7 +9,7 @@ print('ABOVE USER ROUTE')
 def members():
     members = Member.query.all()
     print('INSIDE USER ROUTE')
-    return jsonify({'members': [members.to_dict() for member in members]})
+    return jsonify({'members': [member.to_dict() for member in members]})
 
 @member_routes.route('/<int:id>')
 # @login_required
