@@ -14,10 +14,12 @@ class Member(db.Model, UserMixin):
     email = db.Column(db.String(50), nullable=False, unique=True)
     club_id = db.Column(db.Integer)
     member_info = db.Column( member_type)
-    last_login = db.Column(db.DateTime)
-    password_digest = db.Column(db.String(50), nullable=False)
-    # created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    # updated_at = db.Column(db.DateTime, default=datetime.utcnow)
+    last_login = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    password_digest = db.Column(db.String(102), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     @property
     def password(self):

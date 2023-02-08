@@ -8,8 +8,8 @@ class Club(db.Model):
     name = db.Column(db.String(50), nullable=False, unique=True)
     location = db.Column(db.String(50), nullable=False)
     join_code = db.Column(db.String(6), nullable=False)
-    # created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    # updated_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def to_dict(self):
         return {
