@@ -1,4 +1,4 @@
-from models import db, User
+from models import db, Member
 
 def seed_users():
     demo = User(
