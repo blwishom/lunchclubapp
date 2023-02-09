@@ -50,7 +50,7 @@ def logout():
     """
     Logs a member out
     """
-    logout_member()
+    logout_user()
     return {'message': 'Member logged out'}
 
 
