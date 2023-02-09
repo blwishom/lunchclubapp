@@ -8,6 +8,7 @@ from flask_login import LoginManager
 
 from models import db, Member
 from api.member_routes import member_routes
+from api.club_routes import club_routes
 from api.auth_routes import auth_routes
 
 from seeds import seed_commands
@@ -60,6 +61,7 @@ def load_member(id):
 # Tell flask about our seed commands
 app.cli.add_command(seed_commands)
 app.register_blueprint(member_routes, url_prefix='/api/members')
+app.register_blueprint(club_routes, url_prefix='/api/clubs')
 # app.register_blueprint(auth_routes, url_prefix='/api/auth')
 db.init_app(app)
 Migrate(app, db)
