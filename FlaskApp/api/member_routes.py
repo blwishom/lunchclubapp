@@ -17,15 +17,6 @@ def create_member():
     db.session.commit()
     return "Member created successfully!"
 
-"""
-@app.route("/fee-line-items", method=["POST"])
-def create_fee_line_item():
-    item = FeeLineItem(**request.form)
-    db.session.add(item)
-    db.session.commit()
-    return redirect(url_for("fee_line_item", id=item.id))
-"""
-
 @member_routes.route('/<int:id>')
 # @login_required
 def member(id):

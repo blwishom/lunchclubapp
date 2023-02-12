@@ -17,7 +17,7 @@ class Member(db.Model, UserMixin):
     member_info = db.Column( member_type)
     last_login = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    password_digest = db.Column(db.String(102), nullable=False)
+    password_digest = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
