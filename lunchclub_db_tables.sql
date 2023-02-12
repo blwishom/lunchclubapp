@@ -18,12 +18,12 @@ updated_at DATE NOT NULL
 
 CREATE TABLE members (
 id SERIAL PRIMARY KEY,
-name VARCHAR(50) NOT NULL,
+name VARCHAR(255) NOT NULL,
 member_info member_type NOT NULL,
-username VARCHAR(50) NOT NULL,
-email VARCHAR(50) NOT NULL,
+username VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL,
 club_id INTEGER,
-password_digest VARCHAR(50) NOT NULL,
+password_digest VARCHAR(255) NOT NULL,
 last_login DATE NOT NULL,
 created_at DATE NOT NULL,
 updated_at DATE NOT NULL,
