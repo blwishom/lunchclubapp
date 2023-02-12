@@ -7,8 +7,10 @@ from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
 
 from models import db, Member
-from api.member_routes import member_routes
 from api.auth_routes import auth_routes
+from api.member_routes import member_routes
+from api.club_routes import club_routes
+from api.restaurant_routes import restaurant_routes
 
 from seeds import seed_commands
 
@@ -19,26 +21,6 @@ app.config.from_object(Config)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-# app.config.from_object(Config)
-
-# print("SECRET KEY IS: ", app.config["SECRET_KEY"])
-
-# @app.route("/")
-# def main():
-#     return f'<h1>{app.config["GREETING"]}</h1>'
-
-# if __name__ == "__main__":
-#     app.run()
-# from flask import Flask
-# from config import Config
-# app = Flask(__name__)
-# app.config.from_object(Config)
-
-# print("SECRET KEY IS: ", app.config["SECRET_KEY"])
-
-# @app.route("/")
-# def main():
-#     return f'<h1>{app.config["GREETING"]}</h1>'
 
 if __name__ == "__main__":
     app.run(port=5432)
@@ -60,6 +42,8 @@ def load_member(id):
 # Tell flask about our seed commands
 app.cli.add_command(seed_commands)
 app.register_blueprint(member_routes, url_prefix='/api/members')
+app.register_blueprint(club_routes, url_prefix='/api/clubs')
+app.register_blueprint(restaurant_routes, url_prefix='/api/restaurants')
 # app.register_blueprint(auth_routes, url_prefix='/api/auth')
 db.init_app(app)
 Migrate(app, db)
