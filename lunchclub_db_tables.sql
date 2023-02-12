@@ -9,7 +9,7 @@ CREATE TYPE member_type AS ENUM ('banned', 'regular', 'admin');
 
 CREATE TABLE clubs (
 id SERIAL PRIMARY KEY,
-name VARCHAR(50) NOT NULL,
+name VARCHAR(255) NOT NULL,
 location VARCHAR(255) NOT NULL,
 join_code VARCHAR(6) NOT NULL,
 created_at DATE NOT NULL,
@@ -33,7 +33,7 @@ FOREIGN KEY (club_id) REFERENCES clubs
 
 CREATE TABLE restaurants (
 id SERIAL PRIMARY KEY,
-name VARCHAR(50) NOT NULL,
+name VARCHAR(255) NOT NULL,
 address VARCHAR(255) NOT NULL,
 created_at DATE NOT NULL,
 updated_at DATE NOT NULL
@@ -43,7 +43,7 @@ CREATE TABLE lunches (
 id SERIAL PRIMARY KEY,
 club_id INTEGER,
 restaurant_id INTEGER,
-name VARCHAR(50) NOT NULL,
+name VARCHAR(255) NOT NULL,
 lunch_date DATE NOT NULL,
 poll_open_date DATE NOT NULL,
 poll_close_date DATE NOT NULL,
