@@ -1,26 +1,27 @@
 from flask import Blueprint, jsonify, abort, request
 from flask_login import login_required
 from models import Member, db
+from services import get_members, create_member, get_member
 
 member_routes = Blueprint('members', __name__)
 # @login_required
 @member_routes.route('/', methods=['GET'])
-def members():
-    members = Member.query.all()
+def get_members_route():
+    members = get_members()
     return jsonify({'members': [member.to_dict() for member in members]})
 
 @member_routes.route('/', methods=['POST'])
-def create_member():
+def create_member_route():
     # add validations
-    new_member = Member(**request.form)
-    db.session.add(new_member)
-    db.session.commit()
-    return "Member created successfully!"
+    print("Trying...")
+    new_member = create_member(**request.form)
+    if(new_member):
+        return jsonify(new_member), 201
+    else:
+        return "Error creating member", 400
 
-@member_routes.route('/<int:id>')
+@member_routes.route('/<int:id>', methods=['GET'])
 # @login_required
-def member(id):
-    member = Member.query.get_or_404(id)
-    if(member is None):
-        abort(404)
-    return member.to_dict()
+def get_member_route(id):
+    member_data = get_member(id)
+    return member_data
