@@ -13,7 +13,6 @@ def get_members_route():
 @member_routes.route('/', methods=['POST'])
 def create_member_route():
     # add validations
-    print("Trying...")
     new_member = create_member(**request.form)
     if(new_member):
         return jsonify(new_member), 201

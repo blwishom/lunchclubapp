@@ -1,19 +1,38 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from flask_login import login_required
 from models import Club
+from services import get_clubs, create_club, get_club, update_club
 
 club_routes = Blueprint('clubs', __name__)
 # @login_required
 
 @club_routes.route('/', methods=['GET'])
-def clubs():
-    clubs = Club.query.all()
+def get_clubs_route():
+    clubs = get_clubs()
     return jsonify({'clubs': [club.to_dict() for club in clubs]})
 
-@club_routes.route('/<int:id>')
+
+@club_routes.route('/', methods=['POST'])
+def create_club_route():
+    # add validations
+    new_club = create_club(**request.form)
+    if (new_club):
+        return jsonify(new_club), 201
+    else:
+        return "Error creating club", 400
+
+
+@club_routes.route('/<int:id>', methods=['GET'])
 # @login_required
-def club(id):
-    club = Club.query.get(id)
-    if(club is None):
-        return jsonify({'error': f"This is not a valid club"})
-    return club.to_dict()
+def get_club_route(id):
+    club_data = get_club(id)
+    return club_data
+
+
+@club_routes.route('/<int:id>', methods=['PATCH'])
+def update_club_route(id):
+    club_data = update_club(id, **request.form)
+    if (club_data):
+        return jsonify(club_data), 200
+    else:
+        return "Error updating member", 400
