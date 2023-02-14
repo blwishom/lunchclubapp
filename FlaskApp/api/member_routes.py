@@ -29,4 +29,7 @@ def get_member_route(id):
 @member_routes.route('/<int:id>', methods=['PATCH'])
 def update_member_route(id):
     member_data = update_member(id, **request.form)
-    return member_data
+    if(member_data):
+        return jsonify(member_data), 200
+    else:
+        return "Error updating member", 400
