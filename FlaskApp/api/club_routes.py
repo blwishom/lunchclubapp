@@ -35,4 +35,4 @@ def update_club_route(id):
     if (club_data):
         return jsonify(club_data), 200
     else:
-        return "Error updating member", 400
+        return "Error updating club", 400
