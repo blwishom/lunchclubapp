@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, abort, request
 from flask_login import login_required
 from models import Member, db
-from services import get_members, create_member, get_member
+from services import get_members, create_member, get_member, update_member
 
 member_routes = Blueprint('members', __name__)
 # @login_required
@@ -24,4 +24,9 @@ def create_member_route():
 # @login_required
 def get_member_route(id):
     member_data = get_member(id)
+    return member_data
+
+@member_routes.route('/<int:id>', methods=['PATCH'])
+def update_member_route(id):
+    member_data = update_member(id, **request.form)
     return member_data
