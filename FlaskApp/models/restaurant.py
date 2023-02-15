@@ -1,13 +1,14 @@
 from .db import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
 from sqlalchemy import Enum, UniqueConstraint
 
 member_type = Enum('banned', 'regular', 'admin', name='member_type')
 
-class Restaurant(db.Model, UserMixin):
+class Restaurant(db.Model):
     __tablename__ = 'restaurants'
+    __table_args__ = (UniqueConstraint(
+        'name', name='uq_restaurants_name'),)
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     address = db.Column(db.String(255), nullable=False, unique=True)
