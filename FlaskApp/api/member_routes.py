@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, abort, request
 from flask_login import login_required
-from models import Member, db
+from sqlalchemy.exc import SQLAlchemyError
 from services import get_members, create_member, get_member, update_member
 
 member_routes = Blueprint('members', __name__)
@@ -13,11 +13,11 @@ def get_members_route():
 @member_routes.route('/', methods=['POST'])
 def create_member_route():
     # add validations
-    new_member = create_member(**request.form)
-    if(new_member):
+    try:
+        new_member = create_member(**request.form)
         return jsonify(new_member), 201
-    else:
-        return "Error creating member", 400
+    except SQLAlchemyError as e:
+        return jsonify({'status': 'error creating member', 'message': str(e)}), 400
 
 @member_routes.route('/<int:id>', methods=['GET'])
 # @login_required

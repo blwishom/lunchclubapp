@@ -13,7 +13,7 @@ def create_member(**member_data):
         db.session.commit()
         return new_member.to_dict()
     except SQLAlchemyError as e:
-        return None
+        raise e
 
 def get_member(id):
     member = Member.query.get_or_404(id)
