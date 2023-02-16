@@ -15,11 +15,11 @@ class Club(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def validate(self):
-        if len(self.name) < 3:
+        if self.name is None or len(self.name) < 3:
             raise ValueError('Name must be at least 3 characters long')
-        if len(self.location) < 2:
+        if self.location is None or len(self.location) < 2:
             raise ValueError('Location must be at least 2 characters long')
-        if len(self.join_code) != 6:
+        if self.join_code is None or len(self.join_code) != 6:
             raise ValueError('Join code must be 6 characters long')
             
     def to_dict(self):
