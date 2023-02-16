@@ -13,7 +13,7 @@ def create_club(**club_data):
         db.session.commit()
         return new_club.to_dict()
     except SQLAlchemyError as e:
-        return None
+        raise e
 
 def get_club(id):
     club = Club.query.get(id)
@@ -32,4 +32,4 @@ def update_club(id, **club_data):
         db.session.commit()
         return club.to_dict()
     except SQLAlchemyError as e:
-        return None
+        raise e

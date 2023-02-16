@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
-from models import Club
+from sqlalchemy.exc import SQLAlchemyError
 from services import get_clubs, create_club, get_club, update_club
 
 club_routes = Blueprint('clubs', __name__)
@@ -15,11 +15,11 @@ def get_clubs_route():
 @club_routes.route('/', methods=['POST'])
 def create_club_route():
     # add validations
-    new_club = create_club(**request.form)
-    if (new_club):
+    try:
+        new_club = create_club(**request.form)
         return jsonify(new_club), 201
-    else:
-        return "Error creating club", 400
+    except SQLAlchemyError as e:
+        return jsonify({'status': 'error creating club', 'message': str(e)}), 400
 
 
 @club_routes.route('/<int:id>', methods=['GET'])
@@ -31,8 +31,8 @@ def get_club_route(id):
 
 @club_routes.route('/<int:id>', methods=['PATCH'])
 def update_club_route(id):
-    club_data = update_club(id, **request.form)
-    if (club_data):
+    try:
+        club_data = update_club(id, **request.form)
         return jsonify(club_data), 200
-    else:
-        return "Error updating club", 400
+    except SQLAlchemyError as e:
+        return jsonify({'status': 'error updating club', 'message': str(e)}), 400
