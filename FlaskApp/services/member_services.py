@@ -35,7 +35,7 @@ def update_member(id, **member_data):
     member.username = member_data.get('username', member.username)
     member.member_info = member_data.get('member_info', member.member_info)
     member.club_id = member_data.get('club_id', member.club_id)
-    tentative_member = Member(name=member.name, email=member.email, username=member.username, member_info=member.member_info, club_id=member.club_id, password_digest=member.password_digest)
+    tentative_member = Member(name=member.name, email=member.email, username=member.username, member_info=member.member_info, club_id=member.club_id)
 
     try:
         tentative_member.validate()
