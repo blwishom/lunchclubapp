@@ -34,4 +34,4 @@ def update_member(id, **member_data):
         db.session.commit()
         return member.to_dict()
     except SQLAlchemyError as e:
-        return None
+        raise e
