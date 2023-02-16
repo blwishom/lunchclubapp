@@ -11,14 +11,13 @@ def get_clubs_route():
     clubs = get_clubs()
     return jsonify({'clubs': [club.to_dict() for club in clubs]})
 
-
 @club_routes.route('/', methods=['POST'])
 def create_club_route():
     # add validations
     try:
         new_club = create_club(**request.form)
         return jsonify(new_club), 201
-    except SQLAlchemyError as e:
+    except (SQLAlchemyError, ValueError) as e:
         return jsonify({'status': 'error creating club', 'message': str(e)}), 400
 
 
@@ -34,5 +33,5 @@ def update_club_route(id):
     try:
         club_data = update_club(id, **request.form)
         return jsonify(club_data), 200
-    except SQLAlchemyError as e:
+    except (SQLAlchemyError, ValueError) as e:
         return jsonify({'status': 'error updating club', 'message': str(e)}), 400

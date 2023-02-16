@@ -16,7 +16,7 @@ def create_member_route():
     try:
         new_member = create_member(**request.form)
         return jsonify(new_member), 201
-    except SQLAlchemyError as e:
+    except (SQLAlchemyError, ValueError) as e:
         return jsonify({'status': 'error creating member', 'message': str(e)}), 400
 
 @member_routes.route('/<int:id>', methods=['GET'])
@@ -30,5 +30,5 @@ def update_member_route(id):
     try:
         member_data = update_member(id, **request.form)
         return jsonify(member_data), 200
-    except SQLAlchemyError as e:
+    except (SQLAlchemyError, ValueError) as e:
         return jsonify({'status': 'error updating member', 'message': str(e)}), 400

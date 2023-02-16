@@ -9,6 +9,11 @@ def get_clubs():
 def create_club(**club_data):
     new_club = Club(**club_data)
     try:
+        new_club.validate()
+    except ValueError as e:
+        raise e
+        
+    try:
         db.session.add(new_club)
         db.session.commit()
         return new_club.to_dict()
@@ -28,6 +33,13 @@ def update_club(id, **club_data):
     club.name = club_data.get('name', club.name)
     club.location = club_data.get('location', club.location)
     club.join_code = club_data.get('join_code', club.join_code)
+
+    tentative_club = Club(name=club.name, location=club.location, join_code=club.join_code)
+    try:
+        tentative_club.validate()
+    except ValueError as e:
+        raise e
+
     try:
         db.session.commit()
         return club.to_dict()

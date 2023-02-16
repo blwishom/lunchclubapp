@@ -9,6 +9,11 @@ def get_members():
 def create_member(**member_data):
     new_member = Member(**member_data)
     try:
+        new_member.validate()
+    except ValueError as e:
+        raise e
+
+    try:
         db.session.add(new_member)
         db.session.commit()
         return new_member.to_dict()
@@ -30,6 +35,13 @@ def update_member(id, **member_data):
     member.username = member_data.get('username', member.username)
     member.member_info = member_data.get('member_info', member.member_info)
     member.club_id = member_data.get('club_id', member.club_id)
+    tentative_member = Member(name=member.name, email=member.email, username=member.username, member_info=member.member_info, club_id=member.club_id, password_digest=member.password_digest)
+
+    try:
+        tentative_member.validate()
+    except ValueError as e:
+        raise e
+
     try:
         db.session.commit()
         return member.to_dict()

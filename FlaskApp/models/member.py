@@ -33,6 +33,19 @@ class Member(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+    def validate(self):
+        import re
+        if self.username is None or len(self.username) < 3:
+            raise ValueError('Username must be at least 3 characters long')
+        if self.name is None or len(self.name) < 3:
+            raise ValueError('Name must be at least 3 characters long')
+        if self.email is None or re.search(r"^[A-Za-z]+[A-Za-z0-9._\-]*@[a-z][a-z0-9.-]*\.[a-z]{2,}$", self.email) is None:
+            raise ValueError('Email must be valid')
+        if self.member_info is None or self.member_info not in ['banned', 'regular', 'admin']:
+            raise ValueError('Member must be either banned, regular, or admin')
+        if self.club_id is None:
+            raise ValueError('Member must be associated with a club')
+
     def to_dict(self):
         return {
             'id': self.id,
