@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, session, request
 from models import Member, db
 from forms import LoginForm
 from forms import SignUpForm
+from forms import ClubSignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
 
 auth_routes = Blueprint('auth', __name__)
@@ -71,6 +72,26 @@ def sign_up():
         db.session.commit()
         login_user(member)
         return member.to_dict()
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+
+@auth_routes.route('/club-signup', methods=['POST'])
+def club_sign_up():
+    """
+    Creates a new club and logs them in
+    """
+    form = ClubSignUpForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        club = Club(
+            username=form.data['username'],
+            email=form.data['email'],
+            password=form.data['password']
+        )
+        db.session.add(club)
+        db.session.commit()
+        login_user(club)
+        return club.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
