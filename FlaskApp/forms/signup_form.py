@@ -51,3 +51,6 @@ class SignUpForm(FlaskForm):
     password = PasswordField('password', validators=[DataRequired(), Length(min=6)])
     club_id = IntegerField('club_id', validators=[club_exists])
     member_info = SelectField('member_info', choices=[('regular', 'regular'), ('admin', 'admin'), ('banned', 'banned')], validators=[DataRequired()])
+
+    class Meta:
+        csrf = False
