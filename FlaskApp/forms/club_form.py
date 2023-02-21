@@ -1,8 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
-from wtforms.validators import DataRequired, Email, ValidationError
+from wtforms import StringField, IntegerField
+from wtforms.validators import DataRequired, Email, ValidationError, NumberRange, Length
 from models import Club
-
 '''
 id = db.Column(db.Integer, primary_key=True)
 name = db.Column(db.String(255), nullable=False, unique=True)
@@ -32,6 +31,6 @@ def joincode_matches(form, field):
 
 
 class ClubForm(FlaskForm):
-    name = StringField('Club Name: ', validators=DataRequired(), club_exists, validators=[Length(min=3, max=255, message="Name must be between 5 and 50 characters.")])
-    location = StringField('Location: ', validators=DataRequired(), club_exists, validators=[Length(min=3, max=255, message="Location must be 3 characters or longer.")])
+    name = StringField('Club Name:', validators=[DataRequired(), Length(min=3, max=255)], message="Name must be between 5 and 50 characters.")
+    location = StringField('Location:', validators=[DataRequired(), club_exists, Length(min=3, max=255, message="Location must be 3 characters or longer.")])
     join_code = IntegerField(validators=[NumberRange(min=6, max=6, message="Join code must be 6 digits of numbers.")])
