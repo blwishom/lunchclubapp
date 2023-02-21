@@ -1,27 +1,27 @@
 from models import Club, db
-from forms import ClubForm
+# from forms import ClubForm
 from sqlalchemy.exc import SQLAlchemyError
 from flask import abort, jsonify
 
-# def get_clubs():
-#     clubs = Club.query.all()
-#     return clubs
+def get_clubs():
+    clubs = Club.query.all()
+    return clubs
 
-# def create_club(**club_data):
-#     form = ClubForm(request.form)
-#     if form.validate_on_submit():
-#         new_club = Club(**club_data)
-#         db.session.add(new_club)
-#         db.session.commit()
-#         return club.to_dict()
-#     else:
-#         return { 'errors': validation_errors_to_error_messages(form.errors)}, 400
-    # try:
-    #     db.session.add(new_club)
-    #     db.session.commit()
-    #     return new_club.to_dict()
-    # except SQLAlchemyError as e:
-    #     return None
+def create_club(**club_data):
+    form = ClubForm(request.form)
+    if form.validate_on_submit():
+        new_club = Club(**club_data)
+        db.session.add(new_club)
+        db.session.commit()
+        return club.to_dict()
+    else:
+        return { 'errors': validation_errors_to_error_messages(form.errors)}, 400
+    try:
+        db.session.add(new_club)
+        db.session.commit()
+        return new_club.to_dict()
+    except SQLAlchemyError as e:
+        return None
 
 def get_club(id):
     club = Club.query.get(id)
