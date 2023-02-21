@@ -32,6 +32,6 @@ def joincode_matches(form, field):
 
 
 class ClubForm(FlaskForm):
-    name = StringField('Club Name:', validators=DataRequired(), club_exists, validators=[Length(min=3, max=255, message="Name must be between 5 and 50 characters.")])
-    location = StringField('Location:', validators=DataRequired(), club_exists, validators=[Length(min=3, max=255, message="Location must be 3 characters or longer.")])
+    name = StringField('Club Name: ', validators=DataRequired(), club_exists, validators=[Length(min=3, max=255, message="Name must be between 5 and 50 characters.")])
+    location = StringField('Location: ', validators=DataRequired(), club_exists, validators=[Length(min=3, max=255, message="Location must be 3 characters or longer.")])
     join_code = IntegerField(validators=[NumberRange(min=6, max=6, message="Join code must be 6 digits of numbers.")])
