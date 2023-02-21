@@ -14,7 +14,7 @@ def get_clubs_route():
 
 
 #create a new club
-@club_routes.route('/new-club', methods=['POST'])
+@club_routes.route('/', methods=['POST'])
 def create_club_route():
     # add validations
     new_club = create_club(**request.form)
