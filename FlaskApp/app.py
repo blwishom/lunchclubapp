@@ -45,9 +45,7 @@ app.register_blueprint(member_routes, url_prefix='/api/members')
 app.register_blueprint(club_routes, url_prefix='/api/clubs')
 app.register_blueprint(restaurant_routes, url_prefix='/api/restaurants')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
-app.register_blueprint(auth_routes, url_prefix='/api/signup')
-app.register_blueprint(auth_routes, url_prefix='/api/club-signup')
-app.register_blueprint(auth_routes, url_prefix='/api/login')
+
 db.init_app(app)
 Migrate(app, db)
 

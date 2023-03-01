@@ -22,7 +22,7 @@ def password_matches(form, field):
     if not member.check_password(password):
         raise ValidationError('Password was incorrect.')
 
-
+        
 class LoginForm(FlaskForm):
     email = StringField('email', validators=[DataRequired(), member_exists])
     password = StringField('password', validators=[
