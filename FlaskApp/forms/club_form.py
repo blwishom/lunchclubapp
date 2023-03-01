@@ -12,11 +12,11 @@ updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 '''
 
 def club_exists(form, field):
-    # Checking if user exists
-    email = field.data
-    club = Club.query.filter(Club.email == email).first()
+    # Checking if club exists
+    name = field.data
+    club = Club.query.filter(Club.name == name).first()
     if not club:
-        raise ValidationError('The email provided was not found.')
+        raise ValidationError('The name provided was not found.')
 
 
 def joincode_matches(form, field):

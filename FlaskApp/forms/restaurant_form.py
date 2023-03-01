@@ -12,7 +12,7 @@ updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.u
 '''
 
 def restraurant_exists(form, field):
-    # Checking if user exists
+    # Checking if restaurant exists
     name = field.data
     restaurant = Restaurant.query.filter(Restaurant.name == name).first()
     if not restaurant:
