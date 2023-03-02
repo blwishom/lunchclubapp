@@ -17,7 +17,10 @@ def get_clubs_route():
 @club_routes.route('/', methods=['POST'])
 def create_club_route():
     # add validations
-    new_club = create_club(**request.form)
+    try:
+        new_club = create_club(**request.form)
+    except BaseException as e:
+        return str(e)
     if (new_club):
         return jsonify(new_club), 201
     else:
