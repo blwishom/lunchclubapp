@@ -12,8 +12,7 @@ CREATE TABLE users (
     password_digest VARCHAR(255) NOT NULL,
     last_login DATE NOT NULL,
     created_at DATE NOT NULL,
-    updated_at DATE NOT NULL,
-
+    updated_at DATE NOT NULL
 );
 
 CREATE TYPE member_type AS ENUM ('banned', 'regular', 'admin');
