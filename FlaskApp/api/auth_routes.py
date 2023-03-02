@@ -74,26 +74,6 @@ def sign_up():
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@auth_routes.route('/club-signup', methods=['POST'])
-def club_sign_up():
-    """
-    Creates a new club and logs them in
-    """
-    form = ClubSignUpForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
-    if form.validate_on_submit():
-        club = Club(
-            username=form.data['username'],
-            email=form.data['email'],
-            password=form.data['password']
-        )
-        db.session.add(club)
-        db.session.commit()
-        login_user(club)
-        return club.to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
-
-
 @auth_routes.route('/unauthorized')
 def unauthorized():
     """

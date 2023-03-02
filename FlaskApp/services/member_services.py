@@ -1,7 +1,7 @@
 from models import Member, db
 from sqlalchemy.exc import SQLAlchemyError
 from flask import abort
-from forms import SignUpForm
+from forms import MemberForm, EditMemberForm
 from wtforms import ValidationError
 
 def get_members():
@@ -10,12 +10,10 @@ def get_members():
 
 def create_member(**member_data):
     try:
-        form = SignUpForm(**member_data)
-        valid = form.validate_on_submit()
+        form = MemberForm(**member_data)
     except ValidationError as e:
         return str(e)
-    
-    if valid:
+    if form.validate_on_submit():
         new_member = Member(**member_data)
         try:
             db.session.add(new_member)
@@ -24,7 +22,7 @@ def create_member(**member_data):
         except SQLAlchemyError as e:
             return None
     else:
-        return form.errors
+        return { 'errors': str(form.errors)}, 400
 
 def get_member(id):
     member = Member.query.get_or_404(id)
@@ -36,13 +34,18 @@ def update_member(id, **member_data):
     member = Member.query.get_or_404(id)
     if (member is None):
         abort(404)
-    member.name = member_data.get('name', member.name)
-    member.email = member_data.get('email', member.email)
-    member.username = member_data.get('username', member.username)
-    member.member_info = member_data.get('member_info', member.member_info)
-    member.club_id = member_data.get('club_id', member.club_id)
     try:
-        db.session.commit()
-        return member.to_dict()
-    except SQLAlchemyError as e:
-        return None
+        form = EditMemberForm(obj=member)
+        form.id = member.id
+    except ValidationError as e:
+        return str(e)
+
+    if form.validate_on_submit():
+        form.populate_obj(member)
+        try:
+            db.session.commit()
+            return member.to_dict()
+        except SQLAlchemyError as e:
+            return None
+    else:
+        return {'errors': str(form.errors)}, 400
