@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, session, request
-from models import Member, db
+from models import User, db
 from forms import LoginForm
 from forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
@@ -21,7 +21,7 @@ def validation_errors_to_error_messages(validation_errors):
 @auth_routes.route('/')
 def authenticate():
     """
-    Authenticates a member.
+    Authenticates a user.
     """
     if current_user.is_authenticated:
         return current_user.to_dict()
@@ -39,40 +39,59 @@ def login():
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         # Add the user to the session, we are logged in!
-        member = Member.query.filter(Member.email == form.data['email']).first()
-        login_user(member)
-        return member.to_dict()
+        user = User.query.filter(User.username == form.data['username']).first()
+        login_user(user)
+        return user.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
 @auth_routes.route('/logout')
 def logout():
     """
-    Logs a member out
+    Logs a user out
     """
     logout_user()
-    return {'message': 'Member logged out'}
+    return {'message': 'User logged out'}
 
 
 @auth_routes.route('/signup', methods=['POST'])
 def sign_up():
     """
-    Creates a new member and logs them in
+    Creates a new user and logs them in
     """
     form = SignUpForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
-        member = Member(
+        user = User(
+            username=form.data['username'],
+        
+            password=form.data['password']
+        )
+        db.session.add(user)
+        db.session.commit()
+        login_user(user)
+        return user.to_dict()
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+
+@auth_routes.route('/club-signup', methods=['POST'])
+def club_sign_up():
+    """
+    Creates a new club and logs them in
+    """
+    form = ClubSignUpForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        club = Club(
             username=form.data['username'],
             email=form.data['email'],
             password=form.data['password']
         )
-        db.session.add(member)
+        db.session.add(club)
         db.session.commit()
-        login_user(member)
-        return member.to_dict()
+        login_user(club)
+        return club.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
-
 
 
 @auth_routes.route('/unauthorized')
