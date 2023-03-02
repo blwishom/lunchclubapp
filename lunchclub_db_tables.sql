@@ -77,3 +77,7 @@ ALTER TABLE clubs ADD CONSTRAINT uq_clubs_name UNIQUE (name);
 ALTER TABLE restaurants ADD CONSTRAINT uq_restaurants_name UNIQUE (name);
 
 ALTER TABLE members ALTER COLUMN password_digest TYPE VARCHAR(255);
+
+
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO lunchclub_app;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO lunchclub_app;
