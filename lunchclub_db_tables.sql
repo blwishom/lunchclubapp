@@ -80,3 +80,6 @@ FOREIGN KEY (member_id) REFERENCES members,
 FOREIGN KEY (lunch_id) REFERENCES lunches,
 FOREIGN KEY (poll_option_id) REFERENCES poll_options
 );
+
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO lunchclub_app;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO lunchclub_app;
