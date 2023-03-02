@@ -1,5 +1,6 @@
 from flask.cli import AppGroup
 from .members import seed_members
+from .users import seed_users
 from .clubs import seed_clubs
 from .restaurants import seed_restaurants
 
@@ -11,6 +12,7 @@ seed_commands = AppGroup('seed')
 # Creates the `flask seed all` command
 @seed_commands.command('all')
 def seed():
+    seed_users()
     seed_clubs()
     seed_members()
     seed_restaurants()
