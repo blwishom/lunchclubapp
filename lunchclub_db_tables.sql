@@ -71,3 +71,9 @@ FOREIGN KEY (member_id) REFERENCES members,
 FOREIGN KEY (lunch_id) REFERENCES lunches,
 FOREIGN KEY (poll_option_id) REFERENCES poll_options
 );
+
+ALTER TABLE members ADD CONSTRAINT uq_members_username UNIQUE (username);
+ALTER TABLE clubs ADD CONSTRAINT uq_clubs_name UNIQUE (name);
+ALTER TABLE restaurants ADD CONSTRAINT uq_restaurants_name UNIQUE (name);
+
+ALTER TABLE members ALTER COLUMN password_digest TYPE VARCHAR(255);
