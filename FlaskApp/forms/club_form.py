@@ -47,7 +47,7 @@ class EditClubForm(FlaskForm):
     
     def validate_name(self, field):
         club = Club.query.filter_by(name=field.data).first()
-        print(f"self.id is {self.id}")
+        # print(f"self.id is {self.id}")
         if club is not None and club.id != self.id:
             raise ValidationError(f"'{field.data}' is already the name of a club. Try another name")
 

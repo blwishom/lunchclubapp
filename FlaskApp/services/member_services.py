@@ -20,7 +20,7 @@ def create_member(**member_data):
             db.session.commit()
             return new_member.to_dict()
         except SQLAlchemyError as e:
-            return None
+            return {'SQL error': str(e)}
     else:
         return { 'errors': str(form.errors)}, 400
 
@@ -46,6 +46,6 @@ def update_member(id, **member_data):
             db.session.commit()
             return member.to_dict()
         except SQLAlchemyError as e:
-            return None
+            return {'SQL error': str(e)}
     else:
         return {'errors': str(form.errors)}, 400

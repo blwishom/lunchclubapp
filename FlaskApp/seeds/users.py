@@ -28,10 +28,21 @@ def seed_users():
         username='miembro',
         password='password'
     )
+    yet_a_fourth_user = User(
+        username='miembro_miembro',
+        password='password'
+    )
+    yet_a_fifth_user = User(
+        username='membre',
+        password='password'
+    )
 
     db.session.add(demo)
     db.session.add(another_user)
     db.session.add(yet_another_user)
+    db.session.add(yet_a_fourth_user)
+    db.session.add(yet_a_fifth_user)
+
 
     db.session.commit()
 
