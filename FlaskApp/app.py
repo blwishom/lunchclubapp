@@ -5,12 +5,12 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
-
-from models import db, Member
-from api.auth_routes import auth_routes
 from api.member_routes import member_routes
+from api.auth_routes import auth_routes
 from api.club_routes import club_routes
 from api.restaurant_routes import restaurant_routes
+
+from models import db, User
 
 from seeds import seed_commands
 
@@ -36,8 +36,8 @@ login = LoginManager(app)
 login.login_view = 'auth.unauthorized'
 
 @login.user_loader
-def load_member(id):
-    return Member.query.get(int(id))
+def load_user(id):
+    return User.query.get(int(id))
 
 # Tell flask about our seed commands
 app.cli.add_command(seed_commands)
@@ -51,7 +51,6 @@ Migrate(app, db)
 
 # Application Security
 CORS(app)
-
 
 @app.before_request
 def https_redirect():
