@@ -2,26 +2,28 @@ from models import Club, db
 # from forms import ClubForm
 from sqlalchemy.exc import SQLAlchemyError
 from flask import abort, jsonify
+from forms import ClubForm, EditClubForm
+from wtforms.validators import ValidationError
 
 def get_clubs():
     clubs = Club.query.all()
     return clubs
 
 def create_club(**club_data):
-    form = ClubForm(request.form)
+    try:
+        form = ClubForm(**club_data)
+    except ValidationError as e:
+        return str(e)
     if form.validate_on_submit():
         new_club = Club(**club_data)
-        db.session.add(new_club)
-        db.session.commit()
-        return club.to_dict()
+        try:
+            db.session.add(new_club)
+            db.session.commit()
+            return new_club.to_dict()
+        except SQLAlchemyError as e:
+            return None
     else:
-        return { 'errors': validation_errors_to_error_messages(form.errors)}, 400
-    try:
-        db.session.add(new_club)
-        db.session.commit()
-        return new_club.to_dict()
-    except SQLAlchemyError as e:
-        return None
+        return { 'errors': str(form.errors)}, 400
 
 def get_club(id):
     club = Club.query.get(id)
@@ -33,11 +35,25 @@ def update_club(id, **club_data):
     club = Club.query.get_or_404(id)
     if (club is None):
         abort(404)
-    club.name = club_data.get('name', club.name)
-    club.location = club_data.get('location', club.location)
-    club.join_code = club_data.get('join_code', club.join_code)
     try:
-        db.session.commit()
-        return club.to_dict()
-    except SQLAlchemyError as e:
-        return None
+        form = EditClubForm(obj=club)
+        form.id = club.id
+    except ValidationError as e:
+        return str(e)
+
+    if form.validate_on_submit():
+        form.populate_obj(club)
+        try:
+            db.session.commit()
+            return club.to_dict()
+        except SQLAlchemyError as e:
+            return None
+    else:
+        return {'errors': str(form.errors)}, 400
+
+    
+
+    # club.name = club_data.get('name', club.name)
+    # club.location = club_data.get('location', club.location)
+    # club.join_code = club_data.get('join_code', club.join_code)
+    

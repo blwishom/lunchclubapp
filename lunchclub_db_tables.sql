@@ -4,12 +4,22 @@ DROP TABLE lunches;
 DROP TABLE restaurants;
 DROP TABLE members;
 DROP TABLE clubs;
+DROP TABLE users;
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password_digest VARCHAR(255) NOT NULL,
+    last_login DATE NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL
+);
 
 CREATE TYPE member_type AS ENUM ('banned', 'regular', 'admin');
 
 CREATE TABLE clubs (
 id SERIAL PRIMARY KEY,
-name VARCHAR(255) NOT NULL,
+name VARCHAR(255) UNIQUE NOT NULL,
 location VARCHAR(255) NOT NULL,
 join_code VARCHAR(6) NOT NULL,
 created_at DATE NOT NULL,
@@ -20,20 +30,19 @@ CREATE TABLE members (
 id SERIAL PRIMARY KEY,
 name VARCHAR(255) NOT NULL,
 member_info member_type NOT NULL,
-username VARCHAR(255) NOT NULL,
 email VARCHAR(255) NOT NULL,
 club_id INTEGER,
-password_digest VARCHAR(255) NOT NULL,
-last_login DATE NOT NULL,
+user_id INTEGER UNIQUE,
 created_at DATE NOT NULL,
 updated_at DATE NOT NULL,
 
-FOREIGN KEY (club_id) REFERENCES clubs
+FOREIGN KEY (club_id) REFERENCES clubs,
+FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL
 );
 
 CREATE TABLE restaurants (
 id SERIAL PRIMARY KEY,
-name VARCHAR(255) NOT NULL,
+name VARCHAR(255) UNIQUE NOT NULL,
 address VARCHAR(255) NOT NULL,
 created_at DATE NOT NULL,
 updated_at DATE NOT NULL
@@ -71,13 +80,6 @@ FOREIGN KEY (member_id) REFERENCES members,
 FOREIGN KEY (lunch_id) REFERENCES lunches,
 FOREIGN KEY (poll_option_id) REFERENCES poll_options
 );
-
-ALTER TABLE members ADD CONSTRAINT uq_members_username UNIQUE (username);
-ALTER TABLE clubs ADD CONSTRAINT uq_clubs_name UNIQUE (name);
-ALTER TABLE restaurants ADD CONSTRAINT uq_restaurants_name UNIQUE (name);
-
-ALTER TABLE members ALTER COLUMN password_digest TYPE VARCHAR(255);
-
 
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO lunchclub_app;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO lunchclub_app;
