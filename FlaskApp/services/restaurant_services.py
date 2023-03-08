@@ -1,42 +1,52 @@
 from models import Restaurant, db
-# from forms import ClubForm
+# from forms import RestaurantForm
 from sqlalchemy.exc import SQLAlchemyError
 from flask import abort, jsonify
+from forms import RestaurantForm, EditRestaurantForm
+from wtforms.validators import ValidationError
 
-def get_restaurant():
-    restaurant = Restaurant.query.all()
-    return restaurant
+def get_restaurants():
+    restaurants = Restaurant.query.all()
+    return restaurants
 
 def create_restaurant(**restaurant_data):
-    form = RestraurantForm(request.form)
-    if form.validate_on_submit():
-        new_restaurant = Restraurant(**restaurant_data)
-        db.session.add(new_restaurant)
-        db.session.commit()
-        return restaurant.to_dict()
-    else:
-        return { 'errors': validation_errors_to_error_messages(form.errors)}, 400
     try:
-        db.session.add(new_restaurant)
-        db.session.commit()
-        return new_restaurant.to_dict()
-    except SQLAlchemyError as e:
-        return None
+        form = RestaurantForm(**restaurant_data)
+    except ValidationError as e:
+        return str(e)
+    if form.validate_on_submit():
+        new_restaurant = Restaurant(**restaurant_data)
+        try:
+            db.session.add(new_restaurant)
+            db.session.commit()
+            return new_restaurant.to_dict()
+        except SQLAlchemyError as e:
+            return None
+    else:
+        return { 'errors': str(form.errors)}, 400
 
 def get_restaurant(id):
     restaurant = Restaurant.query.get(id)
     if (restaurant is None):
-        return jsonify({'error': f"This is not a valid club"})
+        return jsonify({'error': f"This is not a valid restaurant"})
     return restaurant.to_dict()
 
 def update_restaurant(id, **restaurant_data):
-    restaurant = Club.query.get_or_404(id)
+    restaurant = Restaurant.query.get_or_404(id)
     if (restaurant is None):
         abort(404)
-    restaurant.name = restaurant_data.get('name', restaurant.name)
-    restaurant.address = restaurant_data.get('address', restaurant.address)
     try:
-        db.session.commit()
-        return restaurant.to_dict()
-    except SQLAlchemyError as e:
-        return None
+        form = EditRestaurantForm(obj=restaurant)
+        form.id = restaurant.id
+    except ValidationError as e:
+        return str(e)
+
+    if form.validate_on_submit():
+        form.populate_obj(restaurant)
+        try:
+            db.session.commit()
+            return restaurant.to_dict()
+        except SQLAlchemyError as e:
+            raise BaseException(str(e))
+    else:
+        return {'errors': str(form.errors)}, 400

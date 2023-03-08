@@ -42,10 +42,11 @@ FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL
 
 CREATE TABLE restaurants (
 id SERIAL PRIMARY KEY,
-name VARCHAR(255) UNIQUE NOT NULL,
+name VARCHAR(255) NOT NULL,
 address VARCHAR(255) NOT NULL,
 created_at DATE NOT NULL,
-updated_at DATE NOT NULL
+updated_at DATE NOT NULL,
+UNIQUE (name, address)
 );
 
 CREATE TABLE lunches (

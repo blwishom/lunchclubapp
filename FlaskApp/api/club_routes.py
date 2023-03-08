@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
-from models import Club
 from services import get_clubs, create_club, get_club, update_club
 
 club_routes = Blueprint('clubs', __name__)
