@@ -4,11 +4,18 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
-from flask_login import LoginManager
+from flask_login import LoginManager, UserMixin, login_user, current_user, logout_user, login_required
 from api.member_routes import member_routes
 from api.auth_routes import auth_routes
 from api.club_routes import club_routes
 from api.restaurant_routes import restaurant_routes
+
+login_manager = LoginManager()
+login_manager.session_protection = "strong"
+login_manager.login_view = "login"
+login_manager.login_message_category = "info"
+
+migrate = Migrate()
 
 from models import db, User
 
@@ -21,6 +28,21 @@ app.config.from_object(Config)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
+
+    app.secret_key = 'SECRET_KEY'
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+    login_manager.init_app(app)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    bcrypt.init_app(app)
+
+    return app
 
 if __name__ == "__main__":
     app.run(port=5432)
@@ -41,11 +63,12 @@ def load_user(id):
 
 # Tell flask about our seed commands
 app.cli.add_command(seed_commands)
+
+# Register api routes
 app.register_blueprint(member_routes, url_prefix='/api/members')
 app.register_blueprint(club_routes, url_prefix='/api/clubs')
 app.register_blueprint(restaurant_routes, url_prefix='/api/restaurants')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
-
 db.init_app(app)
 Migrate(app, db)
 

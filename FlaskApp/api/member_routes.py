@@ -4,7 +4,7 @@ from models import Member, db
 from services import get_members, create_member, get_member, update_member
 
 member_routes = Blueprint('members', __name__)
-# @login_required
+@login_required
 @member_routes.route('/', methods=['GET'])
 def get_members_route():
     members = get_members()
@@ -20,7 +20,7 @@ def create_member_route():
         return "Error creating member", 400
 
 @member_routes.route('/<int:id>', methods=['GET'])
-# @login_required
+@login_required
 def get_member_route(id):
     member_data = get_member(id)
     return member_data

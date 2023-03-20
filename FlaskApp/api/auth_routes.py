@@ -28,7 +28,7 @@ def authenticate():
     return {'errors': ['Unauthorized']}
 
 
-@auth_routes.route('/login', methods=['POST'])
+@auth_routes.route('/login/', methods=['GET', 'POST'])
 def login():
     """
     Logs a user in
@@ -64,7 +64,7 @@ def sign_up():
     if form.validate_on_submit():
         user = User(
             username=form.data['username'],
-        
+
             password=form.data['password']
         )
         db.session.add(user)
