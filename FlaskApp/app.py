@@ -15,7 +15,7 @@ login_manager.session_protection = "strong"
 login_manager.login_view = "login"
 login_manager.login_message_category = "info"
 
-migrate = Migrate()
+# migrate = Migrate()
 
 from models import db, User
 
@@ -29,10 +29,10 @@ app.config.from_object(Config)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-app = Flask(__name__)
+# app = Flask(__name__)
 login_manager.init_app(app)
-db.init_app(app)
-migrate.init_app(app, db)
+# db.init_app(app)
+# migrate.init_app(app, db)
 
 if __name__ == "__main__":
     app.run(port=5432)
