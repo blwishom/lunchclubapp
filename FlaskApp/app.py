@@ -30,28 +30,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 app = Flask(__name__)
-def create_app():
-    app = Flask(__name__)
-
-    app.secret_key = 'SECRET_KEY'
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-
-    login_manager.init_app(app)
-    db.init_app(app)
-    migrate.init_app(app, db)
-    bcrypt.init_app(app)
-
-    return app
+login_manager.init_app(app)
+db.init_app(app)
+migrate.init_app(app, db)
 
 if __name__ == "__main__":
     app.run(port=5432)
-
-
-
-
-
-
 
 # Setup login manager
 login = LoginManager(app)

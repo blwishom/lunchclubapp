@@ -5,7 +5,12 @@
 #     GREETING = 'Welcome to the lunch club!'
 #     SECRET_KEY = os.environ.get('SECRET_KEY') or 'default-key-for-devs'
 from flask import Flask
+
 import os
+
+app = Flask(__name__)
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = 'SECRET_KEY'
 
 
 class Config(object):
@@ -18,5 +23,5 @@ class Config(object):
 
     print(os.environ.get('DATABASE_URL'))
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'DATABASE_URL')
+        'DATABASE_URL').replace('postgres://', 'postgresql://')
     SQLALCHEMY_ECHO = True
