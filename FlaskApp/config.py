@@ -23,5 +23,5 @@ class Config(object):
 
     print(os.environ.get('DATABASE_URL'))
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'DATABASE_URL').replace('postgres://', 'postgresql://')
+        'DATABASE_URL')
     SQLALCHEMY_ECHO = True
