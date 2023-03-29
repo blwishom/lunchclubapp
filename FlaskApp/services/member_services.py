@@ -10,6 +10,7 @@ def get_members():
 
 def create_member(**member_data):
     try:
+        # call validations referencing other tables
         form = MemberForm(**member_data)
     except ValidationError as e:
         return str(e)

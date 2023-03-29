@@ -4,8 +4,9 @@ from models import Member, db
 from services import get_members, create_member, get_member, update_member
 
 member_routes = Blueprint('members', __name__)
-@login_required
+
 @member_routes.route('/', methods=['GET'])
+@login_required
 def get_members_route():
     members = get_members()
     return jsonify({'members': [member.to_dict() for member in members]})
