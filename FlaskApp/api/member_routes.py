@@ -12,6 +12,7 @@ def get_members_route():
     return jsonify({'members': [member.to_dict() for member in members]})
 
 @member_routes.route('/', methods=['POST'])
+@login_required
 def create_member_route():
     # add validations
     new_member = create_member(**request.form)
@@ -27,6 +28,7 @@ def get_member_route(id):
     return member_data
 
 @member_routes.route('/<int:id>', methods=['PATCH'])
+@login_required
 def update_member_route(id):
     member_data = update_member(id, **request.form)
     if(member_data):

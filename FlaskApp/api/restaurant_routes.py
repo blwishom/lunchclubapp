@@ -12,6 +12,7 @@ def restaurants():
 
 #create a new restaurant
 @restaurant_routes.route('/', methods=['POST'])
+@login_required
 def create_restaurant_route():
     # add validations
     try:
@@ -25,13 +26,13 @@ def create_restaurant_route():
 
 #get a specific restaurant
 @restaurant_routes.route('/<int:id>', methods=['GET'])
-# @login_required
 def get_restaurant_route(id):
     restaurant_data = get_restaurant(id)
     return restaurant_data
 
 #edit a specific restaurant
 @restaurant_routes.route('/<int:id>', methods=['PATCH'])
+@login_required
 def update_restaurant_route(id):
     try:
         restaurant_data = update_restaurant(id, **request.form)

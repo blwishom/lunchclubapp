@@ -14,6 +14,7 @@ def get_clubs_route():
 
 #create a new club
 @club_routes.route('/', methods=['POST'])
+@login_required
 def create_club_route():
     # add validations
     try:
@@ -27,13 +28,13 @@ def create_club_route():
 
 #get a specific club
 @club_routes.route('/<int:id>', methods=['GET'])
-# @login_required
 def get_club_route(id):
     club_data = get_club(id)
     return club_data
 
 #edit a specific club
 @club_routes.route('/<int:id>', methods=['PATCH'])
+@login_required
 def update_club_route(id):
     club_data = update_club(id, **request.form)
     if (club_data):
