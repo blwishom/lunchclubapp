@@ -15,6 +15,3 @@ class SignUpForm(FlaskForm):
     username = StringField(
         'username', validators=[DataRequired(), username_exists, Length(min=3, max=20)])
     password = PasswordField('password', validators=[DataRequired(), Length(min=6)])
-
-    class Meta: # for testing purposes only. Need to reenable csrf for production
-        csrf = False
