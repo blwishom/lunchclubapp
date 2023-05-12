@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED 1
 
 RUN mkdir -p /FlaskApp
 
-COPY requirements.txt /tmp/requirements.txt
+COPY requirements1.txt /tmp/requirements.txt
 
 WORKDIR /FlaskApp
 

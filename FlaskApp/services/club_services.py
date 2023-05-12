@@ -17,7 +17,7 @@ def create_club(**club_data):
     if form.validate_on_submit():
         new_club = Club(**club_data)
         try:
-            db.session.add(new_club)
+            db.session.add(new_club) # if this fails then connection to database is not closed
             db.session.commit()
             return new_club.to_dict()
         except SQLAlchemyError as e:
@@ -44,7 +44,7 @@ def update_club(id, **club_data):
     if form.validate_on_submit():
         form.populate_obj(club)
         try:
-            db.session.commit()
+            db.session.commit() # if this fails then connection to database is not closed
             return club.to_dict()
         except SQLAlchemyError as e:
             return None

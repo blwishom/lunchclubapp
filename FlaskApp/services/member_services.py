@@ -18,7 +18,7 @@ def create_member(**member_data):
         new_member = Member(**member_data)
         try:
             db.session.add(new_member)
-            db.session.commit()
+            db.session.commit() # if this fails then connection to database is not closed
             return new_member.to_dict()
         except SQLAlchemyError as e:
             return {'SQL error': str(e)}
@@ -44,7 +44,7 @@ def update_member(id, **member_data):
     if form.validate_on_submit():
         form.populate_obj(member)
         try:
-            db.session.commit()
+            db.session.commit() # if this fails then connection to database is not closed
             return member.to_dict()
         except SQLAlchemyError as e:
             return {'SQL error': str(e)}

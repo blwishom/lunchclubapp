@@ -18,7 +18,7 @@ def create_restaurant(**restaurant_data):
         new_restaurant = Restaurant(**restaurant_data)
         try:
             db.session.add(new_restaurant)
-            db.session.commit()
+            db.session.commit() # if this fails then connection to database is not closed
             return new_restaurant.to_dict()
         except SQLAlchemyError as e:
             return None
@@ -44,7 +44,7 @@ def update_restaurant(id, **restaurant_data):
     if form.validate_on_submit():
         form.populate_obj(restaurant)
         try:
-            db.session.commit()
+            db.session.commit() # if this fails then connection to database is not closed
             return restaurant.to_dict()
         except SQLAlchemyError as e:
             raise BaseException(str(e))

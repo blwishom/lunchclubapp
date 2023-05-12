@@ -18,7 +18,7 @@ class Config(object):
     # url in the hidden config vars to start with postgres.
     # so the connection uri must be updated here
 
-    print(os.environ.get('DATABASE_URL'))
+    # print(os.environ.get('DATABASE_URL'))
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL')
     SQLALCHEMY_ECHO = True
