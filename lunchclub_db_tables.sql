@@ -40,6 +40,8 @@ FOREIGN KEY (club_id) REFERENCES clubs,
 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL
 );
 
+CREATE INDEX members_name_idx ON members (name);
+
 CREATE TABLE restaurants (
 id SERIAL PRIMARY KEY,
 name VARCHAR(255) NOT NULL,
@@ -48,6 +50,9 @@ created_at DATE NOT NULL,
 updated_at DATE NOT NULL,
 UNIQUE (name, address)
 );
+
+CREATE INDEX restaurants_name_idx ON restaurants (name);
+CREATE UNIQUE INDEX restaurants_address ON restaurants (address);
 
 CREATE TABLE lunches (
 id SERIAL PRIMARY KEY,
@@ -61,6 +66,9 @@ poll_close_date DATE NOT NULL,
 FOREIGN KEY (club_id) REFERENCES clubs,
 FOREIGN KEY (restaurant_id) REFERENCES restaurants
 );
+
+CREATE INDEX lunches_name_idx ON lunches (name);
+CREATE INDEX lunches_date_idx ON lunches (lunch_date);
 
 CREATE TABLE poll_options (
 id INTEGER PRIMARY KEY,
